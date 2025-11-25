@@ -3,36 +3,6 @@
 
 @charset "utf-8";
 
-// Example Defaults
-// $base-font-family: Helvetica, Arial, sans-serif;
-// $base-font-size:   16px;
-// $small-font-size:  $base-font-size * 0.875;
-// $base-line-height: 1.5;
-
-// $spacing-unit:     30px;
-
-// $text-color:       #111;
-// $background-color: #fdfdfd;
-// $brand-color:      #2a7ae2;
-
-// $grey-color:       #828282;
-// $grey-color-light: lighten($grey-color, 40%);
-// $grey-color-dark:  darken($grey-color, 25%);
-
-// // Width of the content area
-// $content-width:    800px;
-
-// $on-palm:          600px;
-// $on-laptop:        800px;
-
-// Using media queries with like this:
-// @include media-query($on-palm) {
-//     .wrapper {
-//         padding-right: $spacing-unit / 2;
-//         padding-left: $spacing-unit / 2;
-//     }
-// }
-
 // variables.less
 $theme-primary: #054546;
 $theme-secondary: #e89f5e;
@@ -116,12 +86,22 @@ h1, h2, h3, h4, h5, h6 { font-family: 'Open Sans', 'Helvetica Neue', Arial, sans
 .grid-item { display: flex; justify-content: center; align-items: stretch; }
 
 /* Language dropdown styles (top-right) */
+/* Wrapper to position language selector in navbar header */
+.nav-lang-wrapper {
+    margin-left: auto; /* Push to the right */
+    display: flex;
+    align-items: center;
+    height: 50px;
+    padding: 0; /* No extra padding */
+}
+
 .nav-lang { 
     position: relative;
     display: flex;
-    align-items: flex-end; /* Align with logo bottom */
-    height: 50px; /* Match navbar height */
+    align-items: center;
+    height: 100%;
 }
+
 .lang-toggle {
 	display: inline-flex;
 	align-items: center;
@@ -130,14 +110,16 @@ h1, h2, h3, h4, h5, h6 { font-family: 'Open Sans', 'Helvetica Neue', Arial, sans
 	border: 0;
 	color: inherit;
 	font: inherit;
-	padding: 15px 10px;  /* Match navbar padding */
+	padding: 15px 0; /* Remove horizontal padding for consistent alignment */
 	cursor: pointer;
 	height: 100%;
+	white-space: nowrap;
 }
+
 .lang-toggle .lang-flag { font-size: 18px; line-height: 1; }
 .lang-toggle .lang-name { 
-    display: none;
-    line-height: 20px; /* Consistent text line height */
+    display: inline;
+    line-height: 20px;
 }
 .lang-toggle .caret { margin-left: 4px; }
 
@@ -153,16 +135,20 @@ h1, h2, h3, h4, h5, h6 { font-family: 'Open Sans', 'Helvetica Neue', Arial, sans
 	margin: 8px 0 0 0;
 	display: none;
 	min-width: 140px;
-	z-index: 999;
+	max-height: 300px; /* Prevent menu from being too tall */
+	overflow-y: auto; /* Make it scrollable if needed */
+	z-index: 9999; /* Ensure it's above everything */
 }
+
 .lang-menu .lang-item { padding: 0; }
 .lang-link {
 	display: flex;
 	align-items: center;
 	gap: 8px;
-	padding: 6px 10px;
+	padding: 8px 12px;
 	color: #222;
 	text-decoration: none;
+	white-space: nowrap;
 }
 .lang-link:hover { background: rgba(0,0,0,0.03); }
 .lang-item.active .lang-link { font-weight: 600; }
@@ -170,9 +156,12 @@ h1, h2, h3, h4, h5, h6 { font-family: 'Open Sans', 'Helvetica Neue', Arial, sans
 /* remove underline on hover explicitly */
 .lang-link, .lang-link:hover { text-decoration: none; }
 
-/* Show language name on wider screens */
-@media (min-width: 768px) {
-	.lang-toggle .lang-name { display: inline; }
+/* Responsive adjustments for mobile/tablet */
+@media (max-width: 767px) {
+	.lang-toggle .lang-name { 
+		display: inline; /* Always show language name on mobile */
+		font-size: 14px; /* Slightly smaller on mobile */
+	}
 }
 /* Improve vertical alignment of the language selector in the navbar */
 .navbar-nav {
@@ -191,6 +180,8 @@ h1, h2, h3, h4, h5, h6 { font-family: 'Open Sans', 'Helvetica Neue', Arial, sans
 	/* keep brand left and nav right */
 	/* push the collapsed navbar to the far right in the flex container */
 	justify-content: space-between;
+	padding-left: 20px; /* Consistent padding on all screen sizes */
+	padding-right: 20px; /* Consistent padding on all screen sizes */
 }
 
 /* Fallback: ensure the collapsed navbar block is pushed to the right
@@ -200,20 +191,31 @@ h1, h2, h3, h4, h5, h6 { font-family: 'Open Sans', 'Helvetica Neue', Arial, sans
 /* Keep brand left and nav right while centering vertically */
 #mainNav .navbar-header {
 	display: flex;
-	align-items: flex-end; /* Align brand with bottom */
+	align-items: center;
+	justify-content: space-between; /* Space between logo and language selector */
+	width: 100%; /* Take full width */
 	height: 50px; /* Match navbar height */
 }
+
 /* Ensure logo maintains aspect ratio while filling height */
 #mainNav .navbar-brand {
-	padding: 10px 15px; /* Adjust padding to vertically center logo */
+	padding: 10px 0; /* Remove horizontal padding for consistent alignment */
 	height: 100%;
 	display: flex;
 	align-items: center;
 }
+
 #mainNav .navbar-brand img {
-	max-height: 30px; /* Keep logo reasonably sized */
+	max-height: 30px;
 	width: auto;
 	height: auto;
+}
+
+/* Position hamburger menu button */
+.navbar-toggle {
+	margin-right: 0;
+	position: relative;
+	z-index: 1;
 }
 
 /* Emoji rendering improvement - prefer color emoji fonts where available */
@@ -239,6 +241,163 @@ h1, h2, h3, h4, h5, h6 { font-family: 'Open Sans', 'Helvetica Neue', Arial, sans
 /* Slightly narrower menu and reduced padding to make it less wide */
 .lang-menu { min-width: 130px; }
 .lang-link { padding: 6px 10px; }
+
+/* Featured Media Section */
+.section-subtitle {
+	font-size: 12px;
+	font-weight: 700;
+	letter-spacing: 2px;
+	text-transform: uppercase;
+	color: $theme-secondary;
+	margin-bottom: 10px;
+}
+
+.section-introduction {
+	text-align: center;
+}
+
+.featured-media-grid {
+	display: grid;
+	grid-template-columns: repeat(4, 1fr);
+	gap: 30px;
+	max-width: 1200px;
+	margin: 40px auto 0;
+	padding: 0 20px 20px 20px; /* Added bottom padding for shadows */
+}
+
+.featured-media-card {
+	display: flex;
+	flex-direction: column;
+	text-decoration: none;
+	color: inherit;
+	background: #fff;
+	border-radius: 8px;
+	overflow: hidden;
+	box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+	transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.featured-media-card:hover {
+	transform: translateY(-4px);
+	box-shadow: 0 4px 16px rgba(0,0,0,0.12);
+	text-decoration: none;
+}
+
+.featured-media-image {
+	position: relative;
+	width: 100%;
+	padding-top: 133.33%; /* 3:4 aspect ratio for vertical orientation */
+	background: #f5f5f5;
+	overflow: hidden;
+}
+
+.featured-media-image img {
+	position: absolute;
+	top: 0;
+	left: 0;
+	width: 100%;
+	height: 100%;
+	object-fit: cover;
+}
+
+.featured-media-placeholder {
+	position: absolute;
+	top: 0;
+	left: 0;
+	width: 100%;
+	height: 100%;
+	background: linear-gradient(135deg, #f5f5f5 0%, #e0e0e0 100%);
+}
+
+.featured-media-logo {
+	position: absolute;
+	top: 12px;
+	left: 12px;
+	background: white;
+	padding: 8px 12px;
+	border-radius: 4px;
+	box-shadow: 0 2px 6px rgba(0,0,0,0.15);
+	max-width: 80px;
+	height: 40px;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+}
+
+.featured-media-logo img {
+	position: static;
+	width: auto;
+	height: auto;
+	max-width: 100%;
+	max-height: 100%;
+	object-fit: contain;
+}
+
+.featured-media-content {
+	padding: 20px;
+	display: flex;
+	flex-direction: column;
+	gap: 8px;
+	flex: 1;
+}
+
+.featured-media-title {
+	font-size: 16px;
+	font-weight: 600;
+	line-height: 1.4;
+	margin: 0;
+	color: #222;
+	display: -webkit-box;
+	-webkit-line-clamp: 3;
+	line-clamp: 3;
+	-webkit-box-orient: vertical;
+	overflow: hidden;
+	min-height: 67.2px; /* 3 lines at line-height 1.4 */
+}
+
+.featured-media-date {
+	font-size: 13px;
+	color: #666;
+	margin: 0;
+	font-weight: 400;
+}
+
+/* Responsive layout for featured media */
+@media (max-width: 992px) {
+	.featured-media-grid {
+		display: flex;
+		overflow-x: auto;
+		scroll-snap-type: x mandatory;
+		gap: 25px;
+		padding: 0 20px 20px 20px; /* Maintain bottom padding */
+		-webkit-overflow-scrolling: touch;
+		scrollbar-width: none; /* Firefox */
+		margin-bottom: 20px;
+	}
+	
+	.featured-media-grid::-webkit-scrollbar {
+		display: none; /* Chrome, Safari, Opera */
+	}
+	
+	.featured-media-card {
+		flex: 0 0 calc(50% - 12.5px); /* 2 cards visible */
+		scroll-snap-align: start;
+		min-width: calc(50% - 12.5px);
+	}
+}
+
+@media (max-width: 576px) {
+	.featured-media-grid {
+		gap: 20px;
+		padding: 0 20px 20px 20px; /* Maintain bottom padding */
+	}
+	
+	.featured-media-card {
+		flex: 0 0 calc(100% - 40px); /* 1 card visible */
+		scroll-snap-align: center;
+		min-width: calc(100% - 40px);
+	}
+}
 
 .service-box {
 	display: flex;
